@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Contract {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String contractNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,15 +35,19 @@ public class Contract {
 
     private BigDecimal principalAmount;
 
-    private Double annualInterestRatePercent;
+    private BigDecimal annualInterestRatePercent;
 
     private Integer tenorMonths;
 
-    private Date startDate;
+    private LocalDate startDate;
 
+    @Enumerated(EnumType.STRING)
     private ContractStatus status;
 
-    private List<InstallmentSchedule> installments;
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("installmentNumber ASC")
+    private List<InstallmentSchedule> installments = new ArrayList<>();
 
-    private List<Payment> payments;
+    @OneToMany(mappedBy = "contract", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Payment> payments = new ArrayList<>();
 }

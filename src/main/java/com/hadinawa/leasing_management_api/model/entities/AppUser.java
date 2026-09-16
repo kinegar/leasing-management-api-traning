@@ -1,9 +1,6 @@
 package com.hadinawa.leasing_management_api.model.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +19,6 @@ public class AppUser {
 
     private String passwordHash;
 
+    @Enumerated(EnumType.STRING)
     private AppUserRole role;
 }

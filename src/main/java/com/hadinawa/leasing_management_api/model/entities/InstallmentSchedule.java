@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "installment_schedule")
@@ -21,21 +21,28 @@ public class InstallmentSchedule {
     @Column(nullable = false)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String installmentNumber;
+    @Column(nullable = false)
+    private Integer installmentNumber;
 
-    private Date dueDate;
+    private LocalDate dueDate;
 
     private BigDecimal principalPortion;
 
     private BigDecimal interestPortion;
 
-    private BigDecimal amountPaid;
+    private BigDecimal amountPaid = BigDecimal.ZERO;
 
+    @Enumerated(EnumType.STRING)
     private InstallmentStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id", nullable = false)
+    private Contract contract;
+
+    private BigDecimal totalAmount;
 
     @Transient
     public BigDecimal getRemainingAmount(){
-        return null;
+        return totalAmount.subtract(amountPaid);
     }
 }

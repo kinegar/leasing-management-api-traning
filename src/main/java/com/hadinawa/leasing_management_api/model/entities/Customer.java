@@ -3,6 +3,7 @@ package com.hadinawa.leasing_management_api.model.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,5 +33,5 @@ public class Customer {
     private String address;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private List<Contract> contracts;
+    private List<Contract> contracts = new ArrayList<>();
 }

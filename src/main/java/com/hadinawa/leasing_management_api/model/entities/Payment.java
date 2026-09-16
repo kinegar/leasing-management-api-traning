@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "payment")
@@ -23,9 +23,14 @@ public class Payment {
 
     private BigDecimal amount;
 
-    private Date paymentDay;
+    private LocalDate paymentDay;
 
+    @Enumerated(EnumType.STRING)
     private PaymentMethod method;
 
     private String reference;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contract_id", nullable = false)
+    private Contract contract;
 }
